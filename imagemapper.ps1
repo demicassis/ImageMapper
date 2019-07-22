@@ -54,13 +54,10 @@ Function AddCSV
     # Function to manually create CSV is needed.
     $CSVContent = "`"$ImgBaseName`",`"$ImgExt`",`"$ImgFolderPath`",`"" `
     + "$ImgDateCreated`",`"$ImgDateAccessed`",`"$ImgDateModified`",`"$ImgSize`",`"" `
-    + "$ImgAttributes`",`"$ImgReadOnly`",`"$ImgMD5`",`"$ImgSHA`",`"$ImgSHA256`",`"$ImgPerceivedType`",`"" `
-    + "$ImgOwner`",`"$ImgDateTaken`",`"$ImgProtected`",`"$ImgCameraModel`",`"$ImageDimensions`",`"" `
-    + "$ImgCameraMake`",`"$ImgLocation`",`"$ImgBitDepth`",`"$ImgHorRes`",`"$ImgWidth`",`"$ImgVertRes`",`"" `
-    + "$ImgHeight`",`"$ImgExifVer`",`"$ImgEvent`",`"$ImgExpBias`",`"" `
-    + "$ImgExpProgram`",`"$ImgExpTime`",`"$ImgFstop`",`"$ImgFlashMode`",`"$ImgFocalLen`",`"$ImgISOSpeed`",`"" `
-    + "$ImgLensMaker`",`"$ImgLensModel`",`"$ImgLightSrc`",`"$ImgMaxAper`",`"$ImgMeterMode`",`"$ImgOrientation`",`"" `
-    + "$ImgPeople`",`"$ImgProgMode`",`"$ImgSaturation`",`"$ImgSubDist`",`"$ImgWhiteBal`",`"$ImgPriority`",`"" `
+    + "$ImgAttributes`",`"$ImgReadOnly`",`"$ImgMD5`",`"$ImgSHA`",`"$ImgSHA256`",`"$ImgURL`",`"" `
+    + "$ImgOwner`",`"$ImgDateTaken`",`"$ImgTags`",`"$ImgCameraModel`",`"$ImgDimensions`",`"" `
+    + "$ImgCameraMake`",`"$ImgLocation`",`"$ImgSubject`",`"$ImgTitle`",`"$ImgFileDesc`",`"" `
+    + "$ImgKW1`",`"$ImgKW2`",`"$ImgOrientation`",`"" `
     + "$ImgGPS`",`"$LatOrt`",`"$LonOrt`",`"$Alt`",`"$SeaLev`""
 
     Add-Content $CSVFile $CSVContent
@@ -128,12 +125,10 @@ If ($Source -ne '')
 
         # Create CSV file and add CSV File Header
         New-Item $CSVFile -Type File
-        $CSVHeader = '"File Name","Extension","Directory","Creation Time","Access Time","Modified Time","File Size",' `
-        + '"Attributes","Read Only","MD5 Hash","SHA1 Hash","SHA256 Hash","Perceived Type","Owner","Date Taken","Protected","Camera Model",' `
-        + '"Dimensions","Camera Make","Location","Bit Depth","Horz Res","Width","Vert Res","Height",' `
-        + '"EXIF Ver","Event","Exp Bias","Exp Program","Exp Time","F Stop","Flash Mode","Focal Len","ISO Speed","Lens Maker",' `
-        + '"Lens Model","Light Src","Max Aperature","Meter Mode","Orientation","People","Program Mode","Saturation","Subject Dist",' `
-        + '"White Bal","Priority","GPS Data","Latitude","Longitude","Altitude","Sea Level"'
+        $CSVHeader = '"File Name","Extension","Directory","Date Created","Date Accessed","Date Modified","File Size",' `
+        + '"Attributes","Read Only","MD5 Hash","SHA1 Hash","SHA256 Hash","URL","Owner","Date Taken","Tags","Camera Model",' `
+        + '"Dimensions","Camera Make","Location","Subject","Title"," File Description",' `
+        + '"Keywords1","Keywords2","Orientation","GPS Data","Latitude","Longitude","Altitude","Sea Level"'
         Add-Content $CSVFile $CSVHeader
 
         # Create KML File and add KML File Header
@@ -158,42 +153,24 @@ If ($Source -ne '')
                 DateCreated = $COMfolder.GetDetailsOf($COMFile,4)
                 DateAccessed = $COMfolder.GetDetailsOf($COMFile,5)
                 Attributes = $COMfolder.GetDetailsOf($COMFile,6)
-                PerceivedType = $COMfolder.GetDetailsOf($COMFile,9)
+                URL = $COMfolder.GetDetailsOf($COMFile,205)
                 Owner = $COMfolder.GetDetailsOf($COMFile,10)
                 DateTaken = $COMfolder.GetDetailsOf($COMFile,12)
-                Protected = $COMfolder.GetDetailsOf($COMFile,29)
+                Tags = $COMfolder.GetDetailsOf($COMFile,18)
                 CameraModel = $COMfolder.GetDetailsOf($COMFile,30)
                 Dimensions = $COMfolder.GetDetailsOf($COMFile,31)
                 CameraMake = $COMfolder.GetDetailsOf($COMFile,32)
-                Location = $COMfolder.GetDetailsOf($COMFile,41)
-                BitDepth = $COMfolder.GetDetailsOf($COMFile,169)
-                HorRes = $COMfolder.GetDetailsOf($COMFile,170)
-                Width = $COMfolder.GetDetailsOf($COMFile,171)
-                VertRes = $COMfolder.GetDetailsOf($COMFile,172)
-                Height = $COMfolder.GetDetailsOf($COMFile,173)
-                FolderPath = $COMfolder.GetDetailsOf($COMFile,186)
-                EXIFVer = $COMfolder.GetDetailsOf($COMFile,250)
-                Event = $COMfolder.GetDetailsOf($COMFile,251)
-                ExpBias = $COMfolder.GetDetailsOf($COMFile,252)
-                ExpProgram = $COMfolder.GetDetailsOf($COMFile,253)
-                ExpTime = $COMfolder.GetDetailsOf($COMFile,254)
-                Fstop = $COMfolder.GetDetailsOf($COMFile,255)
-                FlashMode = $COMfolder.GetDetailsOf($COMFile,256)
-                FocalLen = $COMfolder.GetDetailsOf($COMFile,257)
-                MMFocalLen = $COMfolder.GetDetailsOf($COMFile,258)
-                ISOSpeed = $COMfolder.GetDetailsOf($COMFile,259)
-                LensMaker = $COMfolder.GetDetailsOf($COMFile,260)
-                LensModel = $COMfolder.GetDetailsOf($COMFile,261)
-                LightSrc = $COMfolder.GetDetailsOf($COMFile,262)
-                MaxAper = $COMfolder.GetDetailsOf($COMFile,263)
-                MeterMode = $COMfolder.GetDetailsOf($COMFile,264)
-                Orientation = $COMfolder.GetDetailsOf($COMFile,265)
-                People = $COMfolder.GetDetailsOf($COMFile,266)
-                ProgMode = $COMfolder.GetDetailsOf($COMFile,267)
-                Saturation = $COMfolder.GetDetailsOf($COMFile,268)
-                SubDist = $COMfolder.GetDetailsOf($COMFile,269)
-                WhiteBal = $COMfolder.GetDetailsOf($COMFile,270)
-                Priority = $COMfolder.GetDetailsOf($COMFile,271)
+                Location = $COMfolder.GetDetailsOf($COMFile,47)
+                Subject = $COMfolder.GetDetailsOf($COMFile,22)
+                Title = $COMfolder.GetDetailsOf($COMFile,21)
+                Width = $COMfolder.GetDetailsOf($COMFile,177)
+                FileDesc = $COMfolder.GetDetailsOf($COMFile,34)
+                Height = $COMfolder.GetDetailsOf($COMFile,179)
+                FolderPath = $COMfolder.GetDetailsOf($COMFile,192)
+                KW1 = $COMfolder.GetDetailsOf($COMFile,35)
+                KW2 = $COMfolder.GetDetailsOf($COMFile,36)
+                Orientation = $COMfolder.GetDetailsOf($COMFile,271)
+                Extension = $COMfolder.GetDetailsOf($COMFile,165)
                 }
 
                 $ImgName = $MData.Name
@@ -203,42 +180,23 @@ If ($Source -ne '')
                 $ImgDateCreated = $MData.DateCreated
                 $ImgDateAccessed = $MData.DateAccessed
                 $ImgAttributes = $MData.Attributes
-                $ImgPerceivedType = $MData.PerceivedType
+                $ImgURL = $MData.URL
                 $ImgOwner = $MData.Owner
                 $ImgDateTaken = $MData.DateTaken
-                $ImgProtected = $MData.Protected
+                $ImgTags = $MData.Tags
                 $ImgCameraModel = $MData.CameraModel
                 $ImgDimensions = $MData.Dimensions
                 $ImgCameraMake = $MData.CameraMake
                 $ImgLocation = $MData.Location
-                $ImgBitDepth = $MData.BitDepth
-                $ImgHorRes = $MData.HorRes
+                $ImgSubjecth = $MData.Subject
+                $ImgTitle = $MData.Title
                 $ImgWidth = $MData.Width
-                $ImgVertRes = $MData.VertRes
+                $ImgFileDesc = $MData.FileDesc
                 $ImgHeight = $MData.Height
                 $ImgFolderPath = $MData.FolderPath
-                $ImgEXIFVer = $MData.EXIFVer
-                $ImgEvent = $MData.Event
-                $ImgExpBias = $MData.ExpBias
-                $ImgExpProgram = $MData.ExpProgram
-                $ImgExpTime = $MData.ExpTime
-                $ImgFstop = $MData.Fstop
-                $ImgFlashMode = $MData.FlashMode
-                $ImgFocalLen = $MData.FocalLen
-                $ImgMMFocalLen = $MData.MMFocalLen
-                $ImgISOSpeed = $MData.ISOSpeed
-                $ImgLensMaker = $MData.LensMaker
-                $ImgLensModel = $MData.LensModel
-                $ImgLightSrc = $MData.LightSrc
-                $ImgMaxAper = $MData.MaxAper
-                $ImgMeterMode = $MData.MeterMode
+                $ImgKW1 = $MData.KW1
+                $ImgKW2 = $MData.KW2
                 $ImgOrientation = $MData.Orientation
-                $ImgPeople = $MData.People
-                $ImgProgMode = $MData.ProgMode
-                $ImgSaturation = $MData.Saturation
-                $ImgSubDist = $MData.SubDist
-                $ImgWhiteBal = $MData.WhiteBal
-                $ImgPriority = $MData.Priority
                 $ImgExt = $Image.Extension
                 $ImgBaseName = $Image.basename
                 $ImgLastAccess = $Image.LastAccessTime
